@@ -143,10 +143,10 @@ const Delivery = () => {
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            <SelectItem value="small">Small (< 5kg)</SelectItem>
+                            <SelectItem value="small">Small (&lt; 5kg)</SelectItem>
                             <SelectItem value="medium">Medium (5-20kg)</SelectItem>
                             <SelectItem value="large">Large (20-50kg)</SelectItem>
-                            <SelectItem value="extra-large">Extra Large (> 50kg)</SelectItem>
+                            <SelectItem value="extra-large">Extra Large (&gt; 50kg)</SelectItem>
                           </SelectContent>
                         </Select>
                         <FormMessage />
