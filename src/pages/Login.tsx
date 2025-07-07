@@ -1,16 +1,18 @@
 
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { useToast } from '@/components/ui/use-toast';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
+import { FormField } from '@/components/forms/FormField';
+import { useToast } from '@/hooks/use-toast';
+import { Eye, EyeOff } from 'lucide-react';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -21,24 +23,16 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      const success = await login(email, password);
-      if (success) {
-        toast({
-          title: "Login Successful",
-          description: "Welcome to Delivery Drive!",
-        });
-        navigate('/dashboard');
-      } else {
-        toast({
-          title: "Login Failed",
-          description: "Invalid email or password. Try 'password' as password.",
-          variant: "destructive",
-        });
-      }
+      await login(email, password);
+      navigate('/dashboard');
+      toast({
+        title: "Welcome back!",
+        description: "You have successfully signed in.",
+      });
     } catch (error) {
       toast({
-        title: "Error",
-        description: "An error occurred during login.",
+        title: "Sign in failed",
+        description: "Please check your credentials and try again.",
         variant: "destructive",
       });
     } finally {
@@ -46,67 +40,84 @@ const Login = () => {
     }
   };
 
+  const demoCredentials = [
+    { role: 'Admin', email: 'admin@example.com', password: 'admin123' },
+    { role: 'Business', email: 'business@example.com', password: 'business123' },
+    { role: 'Consumer', email: 'consumer@example.com', password: 'consumer123' },
+    { role: 'Transporter', email: 'transporter@example.com', password: 'transporter123' },
+  ];
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <Card className="w-full max-w-md">
-        <CardHeader className="space-y-1">
-          <div className="flex items-center justify-center mb-4">
-            <div className="flex items-center justify-center rounded-full bg-primary w-12 h-12">
-              <span className="text-primary-foreground font-bold text-xl">DD</span>
-            </div>
-          </div>
-          <CardTitle className="text-2xl text-center">Sign in to Delivery Drive</CardTitle>
-          <CardDescription className="text-center">
-            Enter your credentials to access your dashboard
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                placeholder="Enter your password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
-            <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? "Signing in..." : "Sign In"}
-            </Button>
-          </form>
-          
-          <div className="mt-6 text-sm text-center text-gray-600">
-            <p>Demo Credentials:</p>
-            <div className="mt-2 space-y-1">
-              <p>Admin: admin@deliverydrive.com</p>
-              <p>Business: business@example.com</p>
-              <p>Consumer: consumer@example.com</p>
-              <p>Transporter: transporter@example.com</p>
-              <p>Password: password</p>
-            </div>
-          </div>
-          
-          <div className="mt-4 text-center">
-            <Link to="/" className="text-sm text-primary hover:underline">
-              Back to Home
-            </Link>
-          </div>
-        </CardContent>
-      </Card>
+    <div className="min-h-screen flex items-center justify-center bg-background px-4">
+      <div className="w-full max-w-md space-y-6">
+        <div className="text-center">
+          <h1 className="text-3xl font-bold">Welcome Back</h1>
+          <p className="text-muted-foreground">Sign in to your account</p>
+        </div>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Sign In</CardTitle>
+            <CardDescription>Enter your credentials to access your account</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <FormField label="Email" required>
+                <Input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter your email"
+                  required
+                />
+              </FormField>
+
+              <FormField label="Password" required>
+                <div className="relative">
+                  <Input
+                    type={showPassword ? 'text' : 'password'}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Enter your password"
+                    required
+                  />
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </Button>
+                </div>
+              </FormField>
+
+              <Button type="submit" className="w-full" disabled={isLoading}>
+                {isLoading ? 'Signing in...' : 'Sign In'}
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-sm">Demo Credentials</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            {demoCredentials.map((cred) => (
+              <div key={cred.role} className="text-xs space-y-1">
+                <p className="font-medium">{cred.role}:</p>
+                <p className="text-muted-foreground">{cred.email} / {cred.password}</p>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 };
