@@ -23,6 +23,7 @@ const Register = () => {
     // Business specific
     companyName: '',
     businessType: '',
+    coreProduct: '',
     address: '',
     phone: '',
     // Consumer specific
@@ -86,7 +87,7 @@ const Register = () => {
       
       toast({
         title: "Registration successful!",
-        description: "Your account has been created. You can now sign in.",
+        description: "Your account has been created. You can now log in.",
       });
       
       navigate('/login');
@@ -224,6 +225,15 @@ const Register = () => {
                       value={formData.businessType}
                       onChange={(e) => handleInputChange('businessType', e.target.value)}
                       placeholder="e.g., Retail, Restaurant, E-commerce"
+                      required
+                    />
+                  </FormField>
+
+                  <FormField label="Core/Niche Product" required>
+                    <Input
+                      value={formData.coreProduct}
+                      onChange={(e) => handleInputChange('coreProduct', e.target.value)}
+                      placeholder="What is your main product or service?"
                       required
                     />
                   </FormField>

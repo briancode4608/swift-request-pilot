@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -27,11 +28,11 @@ const Login = () => {
       navigate('/dashboard');
       toast({
         title: "Welcome back!",
-        description: "You have successfully signed in.",
+        description: "You have successfully logged in.",
       });
     } catch (error) {
       toast({
-        title: "Sign in failed",
+        title: "Log in failed",
         description: "Please check your credentials and try again.",
         variant: "destructive",
       });
@@ -52,12 +53,12 @@ const Login = () => {
       <div className="w-full max-w-md space-y-6">
         <div className="text-center">
           <h1 className="text-3xl font-bold">Welcome Back</h1>
-          <p className="text-muted-foreground">Sign in to your account</p>
+          <p className="text-muted-foreground">Log in to your account</p>
         </div>
 
         <Card>
           <CardHeader>
-            <CardTitle>Sign In</CardTitle>
+            <CardTitle>Log In</CardTitle>
             <CardDescription>Enter your credentials to access your account</CardDescription>
           </CardHeader>
           <CardContent>
@@ -98,7 +99,7 @@ const Login = () => {
               </FormField>
 
               <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? 'Signing in...' : 'Sign In'}
+                {isLoading ? 'Logging in...' : 'Log In'}
               </Button>
             </form>
           </CardContent>
