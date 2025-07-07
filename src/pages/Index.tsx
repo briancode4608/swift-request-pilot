@@ -30,13 +30,13 @@ const Index = () => {
                 
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Button asChild size="lg" className="group">
-                    <Link to="/login">
+                    <Link to="/register">
                       Get Started
                       <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                     </Link>
                   </Button>
                   <Button asChild variant="outline" size="lg">
-                    <Link to="/login">Learn More</Link>
+                    <Link to="/login">Sign In</Link>
                   </Button>
                 </div>
 

@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -8,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { FormField } from '@/components/forms/FormField';
 import { useToast } from '@/hooks/use-toast';
 import { Eye, EyeOff } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -103,6 +103,15 @@ const Login = () => {
             </form>
           </CardContent>
         </Card>
+
+        <div className="text-center">
+          <p className="text-sm text-muted-foreground">
+            Don't have an account?{' '}
+            <Link to="/register" className="text-primary hover:underline">
+              Sign up here
+            </Link>
+          </p>
+        </div>
 
         <Card>
           <CardHeader>

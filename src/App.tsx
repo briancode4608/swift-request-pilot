@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -17,6 +16,7 @@ import ConsumerDashboard from "./pages/ConsumerDashboard";
 import TransporterDashboard from "./pages/TransporterDashboard";
 import Unauthorized from "./pages/Unauthorized";
 import NotFound from "./pages/NotFound";
+import Register from "./pages/Register";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +30,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
             <Route path="/unauthorized" element={<Unauthorized />} />
             
             {/* Protected Routes */}
