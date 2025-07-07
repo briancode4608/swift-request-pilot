@@ -21,11 +21,12 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Mock users for demonstration
-const mockUsers: User[] = [
+// Mock users with proper credentials matching the demo
+const mockUsers: (User & { password: string })[] = [
   {
     id: '1',
-    email: 'admin@deliverydrive.com',
+    email: 'admin@example.com',
+    password: 'admin123',
     name: 'Admin User',
     role: 'admin',
     createdAt: new Date().toISOString(),
@@ -33,6 +34,7 @@ const mockUsers: User[] = [
   {
     id: '2',
     email: 'business@example.com',
+    password: 'business123',
     name: 'Business User',
     role: 'business',
     createdAt: new Date().toISOString(),
@@ -40,6 +42,7 @@ const mockUsers: User[] = [
   {
     id: '3',
     email: 'consumer@example.com',
+    password: 'consumer123',
     name: 'Consumer User',
     role: 'consumer',
     createdAt: new Date().toISOString(),
@@ -47,6 +50,7 @@ const mockUsers: User[] = [
   {
     id: '4',
     email: 'transporter@example.com',
+    password: 'transporter123',
     name: 'Transporter User',
     role: 'transporter',
     createdAt: new Date().toISOString(),
@@ -60,20 +64,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // Check for stored user session
     const storedUser = localStorage.getItem('deliveryDriveUser');
     if (storedUser) {
-      setUser(JSON.parse(storedUser));
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch (error) {
+        localStorage.removeItem('deliveryDriveUser');
+      }
     }
   }, []);
 
   const login = async (email: string, password: string): Promise<boolean> => {
-    // Mock authentication - in real app, this would call an API
-    const foundUser = mockUsers.find(u => u.email === email);
+    // Find user with matching email and password
+    const foundUser = mockUsers.find(u => u.email === email && u.password === password);
     
-    if (foundUser && password === 'password') { // Simple mock password
-      setUser(foundUser);
-      localStorage.setItem('deliveryDriveUser', JSON.stringify(foundUser));
+    if (foundUser) {
+      const { password: _, ...userWithoutPassword } = foundUser;
+      setUser(userWithoutPassword);
+      localStorage.setItem('deliveryDriveUser', JSON.stringify(userWithoutPassword));
       return true;
     }
-    return false;
+    
+    throw new Error('Invalid credentials');
   };
 
   const logout = () => {
